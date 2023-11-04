@@ -1,13 +1,12 @@
 <template>
-  <FileDownloadTable
-    :filesProp="files"
-  />
+  <FileDownloadTable :filesProp="files" :dataKeysProp="DOWNLOADABLE_KEYS" />
 </template>
 <style src="./styles/reset.css"></style>
 <style src="./styles/fileDownloadTable.css"></style>
 
 <script>
 import FileDownloadTable from "./components/FileDownloadTable.vue";
+import { DOWNLOADABLE_KEYS } from "./utils/consts/downloadSchema";
 
 export default {
   name: "App",
@@ -16,6 +15,7 @@ export default {
   },
   data() {
     return {
+      DOWNLOADABLE_KEYS: DOWNLOADABLE_KEYS,
       files: [
         {
           name: "smss.exe",
@@ -58,14 +58,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

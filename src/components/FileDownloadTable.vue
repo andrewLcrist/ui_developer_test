@@ -11,6 +11,14 @@
         </th>
       </tr>
     </thead>
+    <tbody>
+      <tr v-for="(datum, i) in this.files" :key="i">
+        <td>placeholder</td>
+        <td v-for="(_, j) in this.files" :key="j">
+          {{ datum[Object.values(dataKeys)[j]] }}
+        </td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
@@ -18,10 +26,12 @@
 export default {
   data() {
     return {
+      dataKeys: this.dataKeysProp,
       files: structuredClone(this?.filesProp),
     };
   },
   props: {
+    dataKeysProp: Object,
     filesProp: Array,
   },
   computed: {
