@@ -1,13 +1,15 @@
 import { shallowMount } from "@vue/test-utils";
 import { files } from "../consts/FileDownloadTable";
 import FileDownloadTable from "@/components/FileDownloadTable.vue";
+import { DOWNLOADABLE_KEYS } from "@/utils/consts/downloadSchema";
 
 describe("FileDownloadTable.vue", () => {
   describe("Computed methods", () => {
     it("returns array of capitalized headers based on file keys", () => {
       const wrapper = shallowMount(FileDownloadTable, {
         propsData: {
-          fileProps: [...files],
+          dataKeysProp: DOWNLOADABLE_KEYS,
+          filesProp: [...files],
         },
       });
 
@@ -20,7 +22,9 @@ describe("FileDownloadTable.vue", () => {
     it("renders the column headers correctly", () => {
       const wrapper = shallowMount(FileDownloadTable, {
         propsData: {
-          fileProps: [...files],
+          dataKeysProp: DOWNLOADABLE_KEYS,
+
+          filesProp: [...files],
         },
       });
 
