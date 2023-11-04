@@ -1,5 +1,9 @@
 <template>
-  <FileDownloadTable :filesProp="files" :dataKeysProp="DOWNLOADABLE_KEYS" />
+  <FileDownloadTable
+    :filesProp="files"
+    :dataKeysProp="DOWNLOADABLE_KEYS"
+    :labelKeyProp="DOWNLOADABLE_KEYS.DEVICE"
+  />
 </template>
 <style src="./styles/reset.css"></style>
 <style src="./styles/fileDownloadTable.css"></style>
