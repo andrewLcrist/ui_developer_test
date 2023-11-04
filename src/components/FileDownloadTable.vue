@@ -13,7 +13,17 @@
     </thead>
     <tbody>
       <tr v-for="(datum, i) in this.files" :key="i">
-        <td>placeholder</td>
+        <td>
+          <label :for="createLabelKey(datum)">
+            <input
+              :id="createLabelKey(datum)"
+              type="checkbox"
+              v-model="datum.selected"
+              @change="updateSelectAllState"
+            />
+            <span class="custom-checkbox"></span>
+          </label>
+        </td>
         <td v-for="(_, j) in this.files" :key="j">
           {{ datum[Object.values(dataKeys)[j]] }}
         </td>
@@ -42,6 +52,11 @@ export default {
           ? header.charAt(0).toUpperCase() + header.slice(1)
           : header;
       });
+    },
+  },
+  methods: {
+    createLabelKey(datum) {
+      return datum[Object.keys(datum)[0]].split(".").join("") + "-checkbox";
     },
   },
 };
