@@ -1,15 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <DownloadTable />
 </template>
+<style src="./styles/reset.css"></style>
+<style src="./styles/downloadTable.css"></style>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import DownloadTable from "./components/DownloadTable.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    DownloadTable,
   },
 };
 </script>
