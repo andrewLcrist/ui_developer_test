@@ -58,10 +58,10 @@
         <td>
           <label
             class="checkbox-label-container"
-            :for="`${datum[labelKey]}-checkbox`"
+            :for="`${datum[labelKeyProp]}-checkbox`"
           >
             <input
-              :id="`${datum[labelKey]}-checkbox`"
+              :id="`${datum[labelKeyProp]}-checkbox`"
               type="checkbox"
               v-model="datum.selected"
               @change="updateSelectAllState"
@@ -70,20 +70,14 @@
           </label>
         </td>
         <td
-          v-for="(_, j) in Object.keys(dataKeys).length"
+          v-for="(dataKey, j) in Object.values(dataKeysProp)"
           :key="j"
           :class="{
-            capitalize: capitalizedValues.includes(Object.values(dataKeys)[j]),
-            'green-mark': greenMarkKVPs.find((item) => {
-              const matchObject = {
-                [Object.values(dataKeys)[j]?.toLowerCase()]:
-                  datum[Object.values(dataKeys)[j]]?.toLowerCase(),
-              };
-              return JSON.stringify(item) === JSON.stringify(matchObject);
-            }),
+            capitalize: capitalizeContent(j),
+            'green-mark': includeGreenMark(datum, j),
           }"
         >
-          {{ datum[Object.values(dataKeys)[j]] }}
+          {{ datum[Object.values(dataKeysProp)[j]] }}
         </td>
       </tr>
     </tbody>
@@ -95,9 +89,7 @@
 export default {
   data() {
     return {
-      dataKeys: this.dataKeysProp,
       files: structuredClone(this?.filesProp),
-      labelKey: this.labelKeyProp,
       selectAllState: false,
     };
   },
@@ -129,6 +121,11 @@ export default {
     },
   },
   methods: {
+    capitalizeContent(jIndex) {
+      return this.capitalizedValues.includes(
+        Object.values(this.dataKeysProp)[jIndex]
+      );
+    },
     downloadSelected() {
       const selectedFiles = this.files.filter((item) => item.selected);
       if (selectedFiles.length > 0) {
@@ -138,6 +135,15 @@ export default {
 
         alert(alertMessage);
       }
+    },
+    includeGreenMark(datum, jIndex) {
+      return this.greenMarkKVPs.find((item) => {
+        const matchObject = {
+          [Object.values(this.dataKeysProp)[jIndex]?.toLowerCase()]:
+            datum[Object.values(this.dataKeysProp)[jIndex]]?.toLowerCase(),
+        };
+        return JSON.stringify(item) === JSON.stringify(matchObject);
+      });
     },
     selectAllfiles() {
       if (this.selectAllState) {
