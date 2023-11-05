@@ -40,6 +40,37 @@ describe("FileDownloadTable.vue", () => {
       expect(columnHeaders).toHaveLength(5);
       expect(columnHeaders).toEqual(["", "Name", "Device", "Path", "Status"]);
     });
+
+    it("adds a 'green-mark' class on fields as assigned per the prop", () => {
+      const wrapper = shallowMount(FileDownloadTable, {
+        propsData: {
+          greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+          capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
+          dataKeysProp: DOWNLOADABLE_KEYS,
+          filesProp: [...files],
+        },
+      });
+
+      const availableTd = wrapper.find(".green-mark");
+
+      expect(availableTd.text()).toEqual("available");
+    });
+    it("adds 'capitalize' class on fields as assigned per the prop", () => {
+      const wrapper = shallowMount(FileDownloadTable, {
+        propsData: {
+          greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+          capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
+          dataKeysProp: DOWNLOADABLE_KEYS,
+          filesProp: [files[0]],
+        },
+      });
+
+      const availableTd = wrapper.find(
+        `[data-testid="${DOWNLOADABLE_KEYS.STATUS}"]`
+      );
+
+      expect(availableTd.text()).toEqual("scheduled");
+    });
     describe("Select All Toggle", () => {
       it('toggles "Select All" checkbox when clicked', async () => {
         const wrapper = shallowMount(FileDownloadTable, {

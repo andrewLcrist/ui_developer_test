@@ -76,6 +76,7 @@
             capitalize: capitalizeContent(j),
             'green-mark': includeGreenMark(datum, j),
           }"
+          :data-testid="dataKey"
         >
           {{ datum[Object.values(dataKeysProp)[j]] }}
         </td>
