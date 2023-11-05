@@ -3,11 +3,15 @@ import { files } from "../consts/FileDownloadTable";
 import FileDownloadTable from "@/components/FileDownloadTable.vue";
 import { DOWNLOADABLE_KEYS } from "@/utils/consts/downloadSchema";
 
+const labelKeyProp = DOWNLOADABLE_KEYS.DEVICE;
+
 describe("FileDownloadTable.vue", () => {
   describe("Computed methods", () => {
     it("createHeaders returns array of capitalized headers based on file keys", () => {
       const wrapper = shallowMount(FileDownloadTable, {
         propsData: {
+          greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+          capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
           dataKeysProp: DOWNLOADABLE_KEYS,
           filesProp: [...files],
         },
@@ -23,6 +27,8 @@ describe("FileDownloadTable.vue", () => {
     it("renders the column headers correctly", () => {
       const wrapper = shallowMount(FileDownloadTable, {
         propsData: {
+          greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+          capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
           dataKeysProp: DOWNLOADABLE_KEYS,
           filesProp: [...files],
         },
@@ -36,35 +42,41 @@ describe("FileDownloadTable.vue", () => {
     });
     describe("Select All Toggle", () => {
       it('toggles "Select All" checkbox when clicked', async () => {
-        const labelKeyProp = DOWNLOADABLE_KEYS.DEVICE;
         const wrapper = shallowMount(FileDownloadTable, {
           propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
             dataKeysProp: DOWNLOADABLE_KEYS,
             filesProp: [...files],
             labelKeyProp,
           },
         });
 
-        const filesCheckboxClasses = files.map((datum) => {
+        const fileCheckboxIds = files.map((datum) => {
           return `#${datum[labelKeyProp]}-checkbox`;
         });
         const selectAllCheckbox = wrapper.find("#select-all");
-        const individualCheckboxes = filesCheckboxClasses.map((name) => {
+        const individualCheckboxes = fileCheckboxIds.map((name) => {
           return wrapper.find(name);
+        });
+
+        individualCheckboxes.forEach((checkboxWrapper) => {
+          expect(checkboxWrapper?.element?.checked).toBe(false);
         });
 
         await selectAllCheckbox.setChecked(true);
 
         expect(selectAllCheckbox.element.checked).toBe(true);
-
         individualCheckboxes.forEach((checkboxWrapper) => {
           expect(checkboxWrapper?.element?.checked).toBe(true);
         });
       });
 
-      it('displays "None Selected" when none are selected', async () => {
+      it('displays "None Selected" when none are selected', () => {
         const wrapper = shallowMount(FileDownloadTable, {
           propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
             dataKeysProp: DOWNLOADABLE_KEYS,
             filesProp: [...files],
           },
@@ -78,6 +90,8 @@ describe("FileDownloadTable.vue", () => {
       it("displays files length when select all is true", async () => {
         const wrapper = shallowMount(FileDownloadTable, {
           propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
             dataKeysProp: DOWNLOADABLE_KEYS,
             filesProp: [...files],
           },
@@ -93,11 +107,62 @@ describe("FileDownloadTable.vue", () => {
           `Selected ${filesLength}`
         );
       });
+
+      it('displays the "Select All" button in the indeterminate state when some items are selected', async () => {
+        const wrapper = shallowMount(FileDownloadTable, {
+          propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
+            dataKeysProp: DOWNLOADABLE_KEYS,
+            filesProp: [...files],
+            labelKeyProp,
+          },
+        });
+
+        const marioCheckbox = wrapper.find("#Mario-checkbox");
+        const selectAllSpan = wrapper.find("#select-all-span");
+
+        await marioCheckbox.setChecked("true");
+
+        expect(selectAllSpan.classes()).toContain("indeterminate");
+      });
+
+      it('displays the "Select All" button in the checked state when all items are selected', async () => {
+        let individualCheckboxes = [];
+
+        const wrapper = shallowMount(FileDownloadTable, {
+          propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
+            dataKeysProp: DOWNLOADABLE_KEYS,
+            filesProp: [...files],
+            labelKeyProp,
+          },
+        });
+
+        const fileCheckboxIds = files.map((datum) => {
+          return `#${datum[labelKeyProp]}-checkbox`;
+        });
+
+        for await (let id of fileCheckboxIds) {
+          individualCheckboxes.push(wrapper.find(id));
+        }
+
+        for await (let cbox of individualCheckboxes) {
+          cbox.setChecked(true);
+        }
+
+        const selectAllCheckbox = wrapper.find("#select-all");
+
+        expect(selectAllCheckbox.element.checked).toBe(true);
+      });
     });
     describe("Download functionality", () => {
       it('disables "Download Selected" button when no items are selected', async () => {
         const wrapper = shallowMount(FileDownloadTable, {
           propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
             dataKeysProp: DOWNLOADABLE_KEYS,
             filesProp: [...files],
           },
@@ -110,6 +175,8 @@ describe("FileDownloadTable.vue", () => {
       it('displays an alert box with selected file information when "Download Selected" is clicked', async () => {
         const wrapper = shallowMount(FileDownloadTable, {
           propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
             dataKeysProp: DOWNLOADABLE_KEYS,
             filesProp: [...files],
           },

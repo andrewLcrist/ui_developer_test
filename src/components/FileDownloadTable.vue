@@ -1,19 +1,25 @@
 <template>
-  <table>
+  <table id="table">
     <thead>
       <tr>
-        <th>
-          <div>
-            <label for="select-all">
+        <th colspan="5">
+          <div class="ib" id="select-all-container">
+            <label class="checkbox-label-container" for="select-all">
               <input
                 id="select-all"
                 type="checkbox"
                 v-model="selectAllState"
                 @change="selectAllfiles"
               />
-              <span id="select-all-span"></span>
+              <span
+                id="select-all-span"
+                :class="[
+                  'custom-checkbox',
+                  selectAllState === null && 'indeterminate',
+                ]"
+              ></span>
             </label>
-            <p data-testid="selected-count">
+            <p id="select-all-desc" data-testid="selected-count">
               {{ selectedCountText }}
             </p>
           </div>
@@ -43,9 +49,17 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(datum, i) in this.files" :key="i">
+      <tr
+        id="table-row"
+        :class="{ 'selected-row': datum.selected }"
+        v-for="(datum, i) in this.files"
+        :key="i"
+      >
         <td>
-          <label :for="`${datum[labelKey]}-checkbox`">
+          <label
+            class="checkbox-label-container"
+            :for="`${datum[labelKey]}-checkbox`"
+          >
             <input
               :id="`${datum[labelKey]}-checkbox`"
               type="checkbox"
@@ -55,13 +69,27 @@
             <span class="custom-checkbox"></span>
           </label>
         </td>
-        <td v-for="(_, j) in this.files" :key="j">
+        <td
+          v-for="(_, j) in Object.keys(dataKeys).length"
+          :key="j"
+          :class="{
+            capitalize: capitalizedValues.includes(Object.values(dataKeys)[j]),
+            'green-mark': greenMarkKVPs.find((item) => {
+              const matchObject = {
+                [Object.values(dataKeys)[j]?.toLowerCase()]:
+                  datum[Object.values(dataKeys)[j]]?.toLowerCase(),
+              };
+              return JSON.stringify(item) === JSON.stringify(matchObject);
+            }),
+          }"
+        >
           {{ datum[Object.values(dataKeys)[j]] }}
         </td>
       </tr>
     </tbody>
   </table>
 </template>
+<style src="@/styles/fileDownloadTable.css"></style>
 
 <script>
 export default {
@@ -74,6 +102,8 @@ export default {
     };
   },
   props: {
+    greenMarkKVPs: Array,
+    capitalizedValues: Array,
     dataKeysProp: Object,
     filesProp: Array,
     labelKeyProp: String,

@@ -1,16 +1,18 @@
 <template>
   <FileDownloadTable
+    :greenMarkKVPs="[{ [DOWNLOADABLE_KEYS.STATUS]: AVAILABLE }]"
+    :capitalizedValues="[DOWNLOADABLE_KEYS.STATUS]"
     :filesProp="files"
     :dataKeysProp="DOWNLOADABLE_KEYS"
     :labelKeyProp="DOWNLOADABLE_KEYS.DEVICE"
   />
 </template>
 <style src="./styles/reset.css"></style>
-<style src="./styles/fileDownloadTable.css"></style>
+<style src="./styles/root.css"></style>
 
 <script>
 import FileDownloadTable from "./components/FileDownloadTable.vue";
-import { DOWNLOADABLE_KEYS } from "./utils/consts/downloadSchema";
+import { DOWNLOADABLE_KEYS, AVAILABLE } from "./utils/consts/downloadSchema";
 
 export default {
   name: "App",
@@ -19,6 +21,7 @@ export default {
   },
   data() {
     return {
+      AVAILABLE,
       DOWNLOADABLE_KEYS: DOWNLOADABLE_KEYS,
       files: [
         {

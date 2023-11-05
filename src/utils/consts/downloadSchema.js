@@ -2,6 +2,7 @@ const NAME = "name";
 const DEVICE = "device";
 const PATH = "path";
 const STATUS = "status";
+const AVAILABLE = "available";
 
 const DOWNLOADABLE_KEYS = {
   NAME,
@@ -10,4 +11,4 @@ const DOWNLOADABLE_KEYS = {
   STATUS,
 };
 
-export { DOWNLOADABLE_KEYS };
+export { DOWNLOADABLE_KEYS, AVAILABLE };
