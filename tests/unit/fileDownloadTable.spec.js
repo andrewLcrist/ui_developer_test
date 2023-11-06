@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import { files } from "../consts/FileDownloadTable";
 import FileDownloadTable from "@/components/FileDownloadTable.vue";
-import { DOWNLOADABLE_KEYS } from "@/utils/consts/downloadSchema";
+import { AVAILABLE, DOWNLOADABLE_KEYS } from "@/utils/consts/downloadSchema";
 
 const labelKeyProp = DOWNLOADABLE_KEYS.DEVICE;
 window.alert = jest.fn();
@@ -210,6 +210,10 @@ describe("FileDownloadTable.vue", () => {
             greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
             capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
             dataKeysProp: DOWNLOADABLE_KEYS,
+            downloadableQualifier: {
+              key: DOWNLOADABLE_KEYS.STATUS,
+              value: AVAILABLE,
+            },
             filesProp: [...files],
           },
         });
@@ -222,6 +226,32 @@ describe("FileDownloadTable.vue", () => {
         await downloadButton.trigger("click");
 
         expect(alertSpy).toHaveBeenCalled();
+      });
+      it("only downloads items that are specficied by the downloadableQualifier", async () => {
+        const wrapper = shallowMount(FileDownloadTable, {
+          propsData: {
+            greenMarkKVPs: [{ [DOWNLOADABLE_KEYS.STATUS]: "available" }],
+            capitalizedValues: [DOWNLOADABLE_KEYS.STATUS],
+            dataKeysProp: DOWNLOADABLE_KEYS,
+            downloadableQualifier: {
+              key: DOWNLOADABLE_KEYS.STATUS,
+              value: AVAILABLE,
+            },
+            filesProp: [...files],
+          },
+        });
+        const expectedResult =
+          "Path: \\Device\\HarddiskVolume2\\Windows\\System32\\netsh.exe, Device: Luigi\nPath: \\Device\\HarddiskVolume1\\Windows\\System32\\uxtheme.dll, Device: Peach";
+
+        const selectAllCheckbox = wrapper.find("#select-all");
+
+        const alertSpy = jest.spyOn(window, "alert");
+        const downloadButton = wrapper.find("#download-selected");
+
+        await selectAllCheckbox.setChecked(true);
+        await downloadButton.trigger("click");
+
+        expect(alertSpy).toHaveBeenCalledWith(expectedResult);
       });
     });
   });

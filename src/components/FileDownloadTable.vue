@@ -100,6 +100,7 @@ export default {
     greenMarkKVPs: Array,
     capitalizedValues: Array,
     dataKeysProp: Object,
+    downloadableQualifier: Object,
     filesProp: Array,
     labelKeyProp: String,
   },
@@ -130,7 +131,14 @@ export default {
       );
     },
     downloadSelected() {
-      const selectedFiles = this.files.filter((item) => item.selected);
+      const selectedFiles = this.files.filter((item) => {
+        return (
+          item.selected &&
+          item[this.downloadableQualifier.key] ===
+            this.downloadableQualifier.value
+        );
+      });
+
       if (selectedFiles.length > 0) {
         const alertMessage = selectedFiles
           .map((file) => `Path: ${file.path}, Device: ${file.device}`)

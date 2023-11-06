@@ -6,6 +6,10 @@
     :dataKeysProp="DOWNLOADABLE_KEYS"
     :labelKeyProp="DOWNLOADABLE_KEYS.DEVICE"
     :ariaCheckboxKeyProp="DOWNLOADABLE_KEYS.NAME"
+    :downloadableQualifier="{
+      key: DOWNLOADABLE_KEYS.STATUS,
+      value: AVAILABLE,
+    }"
   />
 </template>
 <style src="./styles/reset.css"></style>
