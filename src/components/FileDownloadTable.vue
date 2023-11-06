@@ -2,7 +2,7 @@
   <table id="table">
     <thead>
       <tr>
-        <th colspan="5">
+        <th colspan="5" aria-colspan="2">
           <div class="ib" id="select-all-container">
             <label class="checkbox-label-container" for="select-all">
               <input
@@ -65,6 +65,7 @@
               type="checkbox"
               v-model="datum.selected"
               @change="updateSelectAllState"
+              :aria-label="`${datum[ariaCheckboxKeyProp]}-checkbox`"
             />
             <span class="custom-checkbox"></span>
           </label>
@@ -95,6 +96,7 @@ export default {
     };
   },
   props: {
+    ariaCheckboxKeyProp: String,
     greenMarkKVPs: Array,
     capitalizedValues: Array,
     dataKeysProp: Object,

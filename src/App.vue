@@ -5,6 +5,7 @@
     :filesProp="files"
     :dataKeysProp="DOWNLOADABLE_KEYS"
     :labelKeyProp="DOWNLOADABLE_KEYS.DEVICE"
+    :ariaCheckboxKeyProp="DOWNLOADABLE_KEYS.NAME"
   />
 </template>
 <style src="./styles/reset.css"></style>
