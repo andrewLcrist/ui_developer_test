@@ -4,6 +4,7 @@ import FileDownloadTable from "@/components/FileDownloadTable.vue";
 import { DOWNLOADABLE_KEYS } from "@/utils/consts/downloadSchema";
 
 const labelKeyProp = DOWNLOADABLE_KEYS.DEVICE;
+window.alert = jest.fn();
 
 describe("FileDownloadTable.vue", () => {
   describe("Computed methods", () => {
