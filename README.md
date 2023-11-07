@@ -15,6 +15,7 @@ I approached this task with a focus on enabling the passage of any downloadable 
 - When iterating over an array to create content, the key in each of these cases is currently using the index. As of right now that's fine because these rows aren't currently changing, but if there's an option to change the order of, add, or delete rows, then these keys would need to be changed to something else.
 - Right now, everything is being passed down to `<FileDownloadTable/>` via the parent (`<App/>`). The data and schema consts that are created or imported in the parent (e.g. `DOWNLOADABLE_KEYS` / `AVAILABLE`) would clearly need to be cleaned up depending on API calls and their associated schemas.
 - Styling to accomodate the green circle from overlapping other fields would also need to be considered.
+- Lastly, I kept state internal to the component for simplicity. Managing state externally would be something to consider depending on expected use.
 
 ### Accessibility
 Per screen readers, I tried to stick to appropriate HTML semantic elements in order to enable as many out-of-the-box features as possible. There were definitely some things I'd need to research more before shipping this, such as:
